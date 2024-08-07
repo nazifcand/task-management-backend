@@ -6,6 +6,8 @@ import {
   BelongsToMany,
   HasMany,
   Default,
+  ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { User } from './User.model';
 import { Project } from './Project.model';
@@ -32,4 +34,11 @@ export class Organization extends Model {
 
   @BelongsToMany(() => User, () => OrganizationUser)
   users: User[];
+
+  @ForeignKey(() => User)
+  @Column
+  createdUserId: number;
+
+  @BelongsTo(() => User, { onDelete: 'SET NULL' })
+  createdUser: User;
 }

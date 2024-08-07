@@ -10,6 +10,7 @@ import {
 import { Organization } from './Organization.model';
 import { Task } from './Task.model';
 import { Status } from './Status.model';
+import { User } from './User.model';
 
 @Table({ tableName: 'projects' })
 export class Project extends Model {
@@ -38,4 +39,11 @@ export class Project extends Model {
 
   @HasMany(() => Status)
   statuses: Status[];
+
+  @ForeignKey(() => User)
+  @Column
+  createdUserId: number;
+
+  @BelongsTo(() => User, { onDelete: 'SET NULL' })
+  createdUser: User;
 }

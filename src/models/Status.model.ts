@@ -7,6 +7,7 @@ import {
   Default,
 } from 'sequelize-typescript';
 import { Project } from './Project.model';
+import { User } from './User.model';
 
 @Table({ tableName: 'statuses' })
 export class Status extends Model {
@@ -28,4 +29,11 @@ export class Status extends Model {
 
   @BelongsTo(() => Project)
   project: Project;
+
+  @ForeignKey(() => User)
+  @Column
+  createdUserId: number;
+
+  @BelongsTo(() => User, { onDelete: 'SET NULL' })
+  createdUser: User;
 }

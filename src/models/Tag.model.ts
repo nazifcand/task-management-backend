@@ -9,6 +9,7 @@ import {
 import { Project } from './Project.model';
 import { TaskTag } from './TaskTag.model';
 import { Task } from './Task.model';
+import { User } from './User.model';
 
 @Table({ tableName: 'tags' })
 export class Tag extends Model {
@@ -26,4 +27,11 @@ export class Tag extends Model {
 
   @BelongsToMany(() => Task, () => TaskTag)
   tasks: Task[];
+
+  @ForeignKey(() => User)
+  @Column
+  createdUserId: number;
+
+  @BelongsTo(() => User, { onDelete: 'SET NULL' })
+  createdUser: User;
 }

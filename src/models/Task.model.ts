@@ -45,4 +45,11 @@ export class Task extends Model {
 
   @BelongsToMany(() => Tag, () => TaskTag)
   tags: Tag[];
+
+  @ForeignKey(() => User)
+  @Column
+  createdUserId: number;
+
+  @BelongsTo(() => User, { onDelete: 'SET NULL' })
+  createdUser: User;
 }
