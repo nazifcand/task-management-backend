@@ -7,6 +7,7 @@ import { OrganizationModule } from '../organization/organization.module';
 import { ProjectModule } from '../project/project.module';
 import { TaskModule } from '../task/task.module';
 import { TagModule } from '../tag/tag.module';
+import { StatusModule } from '../status/status.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { TagModule } from '../tag/tag.module';
     ProjectModule,
     TaskModule,
     TagModule,
+    StatusModule,
   ],
   controllers: [AppController],
   providers: [AppService],
