@@ -27,15 +27,12 @@ export default class OrganizationController {
     return organizations;
   }
 
-  @Get('/organizations/:organizationId')
-  async getOrganizationById(
-    @Param('organizationId') organizationId: string,
-  ): Promise<string> {
+  @Get('/organizations/:slug')
+  async getOrganizationBySlug(@Param('slug') slug: string): Promise<string> {
     const [error, organization] =
-      await this.organizationService.getOrganizationById(
-        Number(organizationId),
-      );
+      await this.organizationService.getOrganizationBySlug(slug);
 
+    console.log(error);
     if (error) {
       throw new HttpException(
         'INTERNAL_SERVER_ERROR',

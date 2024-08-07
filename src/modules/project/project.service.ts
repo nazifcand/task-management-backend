@@ -5,13 +5,14 @@ import { Project } from 'src/models/Project.model';
 export class ProjectService {
   async getProjects(): Promise<Project[]> {
     return await Project.findAll({
-      attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+      attributes: { exclude: ['createdAt', 'updatedAt', 'organizationId'] },
     });
   }
 
-  async getProjectById(id: number): Promise<any> {
-    return await Project.findByPk(id, {
-      attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+  async getProjectBySlug(slug: string): Promise<any> {
+    return await Project.findOne({
+      where: { slug },
+      attributes: { exclude: ['createdAt', 'updatedAt', 'organizationId'] },
     })
       .then((data) => [null, data])
       .catch((err) => [err]);

@@ -27,11 +27,9 @@ export default class ProjectController {
     return projects;
   }
 
-  @Get('/projects/:projectId')
-  async getProjectById(@Param('projectId') projectId: string): Promise<string> {
-    const [error, project] = await this.projectService.getProjectById(
-      Number(projectId),
-    );
+  @Get('/projects/:slug')
+  async getProjectById(@Param('slug') slug: string): Promise<string> {
+    const [error, project] = await this.projectService.getProjectBySlug(slug);
 
     if (error) {
       throw new HttpException(

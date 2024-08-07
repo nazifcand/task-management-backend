@@ -9,8 +9,9 @@ export class OrganizationService {
     });
   }
 
-  async getOrganizationById(id: number): Promise<any> {
-    return await Organization.findByPk(id, {
+  async getOrganizationBySlug(slug: string): Promise<any> {
+    return await Organization.findOne({
+      where: { slug },
       attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
     })
       .then((data) => [null, data])
