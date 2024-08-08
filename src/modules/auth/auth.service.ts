@@ -27,9 +27,11 @@ export class AuthService {
         exclude: ['password'],
       },
     })
-      .then((data) => {
-        data.update({ lastLogin: new Date() });
-        return [null, data];
+      .then((user) => {
+        if (user) {
+          user.update({ lastLogin: new Date() });
+        }
+        return [null, user];
       })
       .catch((err) => [err]);
   }
