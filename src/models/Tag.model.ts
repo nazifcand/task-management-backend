@@ -19,6 +19,9 @@ export class Tag extends Model {
   @Column
   color: string;
 
+  @Column
+  textColor: string;
+
   @ForeignKey(() => Project)
   projectId: number;
 

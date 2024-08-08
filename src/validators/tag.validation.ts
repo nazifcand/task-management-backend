@@ -6,10 +6,14 @@ export class CreateTagValidation {
 
   @IsOptional()
   @IsString()
-  tag: string;
+  color: string;
+
+  @IsOptional()
+  @IsString()
+  textColor: string;
 
   @IsNumber()
-  projectId: string;
+  projectId: number;
 }
 
 export class UpdateTagValidation {
@@ -19,9 +23,13 @@ export class UpdateTagValidation {
 
   @IsOptional()
   @IsString()
-  tag: string;
+  color: string;
+
+  @IsOptional()
+  @IsString()
+  textColor: string;
 
   @IsOptional()
   @IsNumber()
-  projectId: string;
+  projectId: number;
 }
