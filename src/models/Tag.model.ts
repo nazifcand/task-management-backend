@@ -22,7 +22,7 @@ export class Tag extends Model {
   @ForeignKey(() => Project)
   projectId: number;
 
-  @BelongsTo(() => Project)
+  @BelongsTo(() => Project, { onDelete: 'CASCADE' })
   project: Project;
 
   @BelongsToMany(() => Task, () => TaskTag)

@@ -34,10 +34,10 @@ export class Project extends Model {
   @BelongsTo(() => Organization)
   organization: Organization;
 
-  @HasMany(() => Task)
+  @HasMany(() => Task, { onDelete: 'CASCADE' })
   tasks: Task[];
 
-  @HasMany(() => Status)
+  @HasMany(() => Status, { onDelete: 'CASCADE' })
   statuses: Status[];
 
   @ForeignKey(() => User)

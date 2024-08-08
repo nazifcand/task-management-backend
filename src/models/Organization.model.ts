@@ -29,7 +29,7 @@ export class Organization extends Model {
   @Column
   thumbnail: string;
 
-  @HasMany(() => Project)
+  @HasMany(() => Project, { onDelete: 'CASCADE' })
   projects: Project[];
 
   @BelongsToMany(() => User, () => OrganizationUser)
