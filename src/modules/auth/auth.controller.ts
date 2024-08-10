@@ -41,7 +41,6 @@ export default class AuthController {
     const [error, user] = await this.authService.login({ email, password });
 
     if (error) {
-      console.log(error);
       throw new HttpException(
         'INTERNAL_SERVER_ERROR',
         HttpStatus.INTERNAL_SERVER_ERROR,

@@ -1,8 +1,8 @@
-import { createHmac } from 'crypto';
+import { createHash } from 'crypto';
 
 const textToHash = (value: string): string => {
-  const md5Key = createHmac('md5', value).digest('hex');
-  const sha1Key = createHmac('sha1', md5Key).digest('hex');
+  const md5Key = createHash('md5').update(value).digest('hex');
+  const sha1Key = createHash('sha1').update(md5Key).digest('hex');
   return sha1Key;
 };
 

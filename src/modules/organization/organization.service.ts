@@ -1,11 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { Organization } from 'src/models/Organization.model';
+import { User } from 'src/models/User.model';
 
 @Injectable()
 export class OrganizationService {
-  async getOrganizations(): Promise<Organization[]> {
+  async getOrganizations(userId: number): Promise<Organization[]> {
     return await Organization.findAll({
       attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+      include: [
+        {
+          required: true,
+          as: 'users',
+          model: User,
+          through: { attributes: [], where: { userId } },
+        },
+      ],
     });
   }
 

@@ -8,6 +8,8 @@ import {
   Param,
   Post,
   Put,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { Organization } from 'src/models/Organization.model';
 import { OrganizationService } from './organization.service';
@@ -16,14 +18,20 @@ import {
   UpdateOrganizationValidation,
 } from 'src/validators/organization.validation';
 import slugify from 'slugify';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller()
 export default class OrganizationController {
   constructor(private organizationService: OrganizationService) {}
 
+  @UseGuards(AuthGuard)
   @Get('/organizations')
-  async getOrganizations(): Promise<Organization[]> {
-    const organizations = await this.organizationService.getOrganizations();
+  async getOrganizations(@Req() req): Promise<Organization[]> {
+    const { user } = req;
+
+    const organizations = await this.organizationService.getOrganizations(
+      user.id,
+    );
     return organizations;
   }
 
@@ -32,7 +40,6 @@ export default class OrganizationController {
     const [error, organization] =
       await this.organizationService.getOrganizationBySlug(slug);
 
-    console.log(error);
     if (error) {
       throw new HttpException(
         'INTERNAL_SERVER_ERROR',
@@ -48,11 +55,16 @@ export default class OrganizationController {
     return organization;
   }
 
+  @UseGuards(AuthGuard)
   @Post('/organizations')
   async createOrganization(
     @Body() body: CreateOrganizationValidation,
+    @Req() req,
   ): Promise<Organization> {
+    const { user } = req;
+
     body['slug'] = slugify(body.title, { lower: true });
+    body['createdUserId'] = user.id;
 
     const [error, organization] =
       await this.organizationService.createOrganization(body);
@@ -63,6 +75,8 @@ export default class OrganizationController {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+
+    organization.$set('users', [user.id]);
 
     return organization;
   }
