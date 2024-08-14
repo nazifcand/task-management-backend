@@ -20,6 +20,7 @@ import {
 import slugify from 'slugify';
 import { AuthGuard } from '../auth/auth.guard';
 import { Tag } from 'src/models/Tag.model';
+import { Status } from 'src/models/Status.model';
 
 @UseGuards(AuthGuard)
 @Controller()
@@ -72,6 +73,25 @@ export default class ProjectController {
     }
 
     return project.tags;
+  }
+
+  @Get('/projects/:slug/statuses')
+  async getProjectStatuses(@Param('slug') slug: string): Promise<Status[]> {
+    const [error, project] = await this.projectService.getProjectStatuses(slug);
+
+    if (error) {
+      throw new HttpException(
+        'INTERNAL_SERVER_ERROR',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    // not found project
+    if (!project) {
+      throw new HttpException('NOT_FOUND', HttpStatus.NOT_FOUND);
+    }
+
+    return project.statuses;
   }
 
   @Post('/projects')

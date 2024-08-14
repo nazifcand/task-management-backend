@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Project } from 'src/models/Project.model';
+import { Status } from 'src/models/Status.model';
 import { Tag } from 'src/models/Tag.model';
 
 @Injectable()
@@ -25,6 +26,24 @@ export class ProjectService {
       where: { slug },
       attributes: { exclude: ['createdAt', 'updatedAt', 'organizationId'] },
       include: [{ as: 'tags', model: Tag }],
+    })
+      .then((data) => [null, data])
+      .catch((err) => [err]);
+  }
+
+  async getProjectStatuses(slug: string): Promise<any> {
+    return await Project.findOne({
+      where: { slug },
+      attributes: { exclude: ['createdAt', 'updatedAt', 'organizationId'] },
+      include: [
+        {
+          as: 'statuses',
+          model: Status,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt', 'createdUserId', 'projectId'],
+          },
+        },
+      ],
     })
       .then((data) => [null, data])
       .catch((err) => [err]);
