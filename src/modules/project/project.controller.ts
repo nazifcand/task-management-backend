@@ -8,6 +8,8 @@ import {
   Param,
   Post,
   Put,
+  Query,
+  UseGuards,
 } from '@nestjs/common';
 import { Project } from 'src/models/Project.model';
 import { ProjectService } from './project.service';
@@ -16,14 +18,20 @@ import {
   UpdateProjectValidation,
 } from 'src/validators/project.validation';
 import slugify from 'slugify';
+import { AuthGuard } from '../auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller()
 export default class ProjectController {
   constructor(private projectService: ProjectService) {}
 
   @Get('/projects')
-  async getProjects(): Promise<Project[]> {
-    const projects = await this.projectService.getProjects();
+  async getProjects(
+    @Query('organizationId') organizationId,
+  ): Promise<Project[]> {
+    const projects = await this.projectService.getProjects({
+      organizationId,
+    });
     return projects;
   }
 

@@ -27,6 +27,31 @@ export class OrganizationService {
       .catch((err) => [err]);
   }
 
+  async getOrganizationUsers(slug: string): Promise<any> {
+    return await Organization.findOne({
+      where: { slug },
+      attributes: { exclude: ['createdAt', 'updatedAt', 'password'] },
+      include: [
+        {
+          as: 'users',
+          model: User,
+          attributes: {
+            exclude: [
+              'password',
+              'userGroupId',
+              'createdAt',
+              'updatedAt',
+              'lastLogin',
+            ],
+          },
+          through: { attributes: [] },
+        },
+      ],
+    })
+      .then((data) => [null, data])
+      .catch((err) => [err]);
+  }
+
   async createOrganization(data): Promise<any> {
     return await Organization.create(data)
       .then((data) => [null, data])

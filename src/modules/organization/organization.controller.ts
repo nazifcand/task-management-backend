@@ -19,6 +19,7 @@ import {
 } from 'src/validators/organization.validation';
 import slugify from 'slugify';
 import { AuthGuard } from '../auth/auth.guard';
+import { User } from 'src/models/User.model';
 
 @Controller()
 export default class OrganizationController {
@@ -53,6 +54,28 @@ export default class OrganizationController {
     }
 
     return organization;
+  }
+
+  @Get('/organizations/:slug/users')
+  async getOrganizationUsersByOrganizationSlug(
+    @Param('slug') slug: string,
+  ): Promise<User[]> {
+    const [error, organization] =
+      await this.organizationService.getOrganizationUsers(slug);
+
+    if (error) {
+      throw new HttpException(
+        'INTERNAL_SERVER_ERROR',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    // not found organization
+    if (!organization) {
+      throw new HttpException('NOT_FOUND', HttpStatus.NOT_FOUND);
+    }
+
+    return organization.users;
   }
 
   @UseGuards(AuthGuard)

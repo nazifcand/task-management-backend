@@ -3,8 +3,9 @@ import { Project } from 'src/models/Project.model';
 
 @Injectable()
 export class ProjectService {
-  async getProjects(): Promise<Project[]> {
+  async getProjects(where: any = {}): Promise<Project[]> {
     return await Project.findAll({
+      where,
       attributes: { exclude: ['createdAt', 'updatedAt', 'organizationId'] },
     });
   }
