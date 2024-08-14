@@ -19,6 +19,7 @@ import {
 } from 'src/validators/project.validation';
 import slugify from 'slugify';
 import { AuthGuard } from '../auth/auth.guard';
+import { Tag } from 'src/models/Tag.model';
 
 @UseGuards(AuthGuard)
 @Controller()
@@ -52,6 +53,25 @@ export default class ProjectController {
     }
 
     return project;
+  }
+
+  @Get('/projects/:slug/tags')
+  async getProjectTags(@Param('slug') slug: string): Promise<Tag[]> {
+    const [error, project] = await this.projectService.getProjectTags(slug);
+
+    if (error) {
+      throw new HttpException(
+        'INTERNAL_SERVER_ERROR',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+
+    // not found project
+    if (!project) {
+      throw new HttpException('NOT_FOUND', HttpStatus.NOT_FOUND);
+    }
+
+    return project.tags;
   }
 
   @Post('/projects')

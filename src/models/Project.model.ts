@@ -11,6 +11,7 @@ import { Organization } from './Organization.model';
 import { Task } from './Task.model';
 import { Status } from './Status.model';
 import { User } from './User.model';
+import { Tag } from './Tag.model';
 
 @Table({ tableName: 'projects' })
 export class Project extends Model {
@@ -33,6 +34,9 @@ export class Project extends Model {
 
   @BelongsTo(() => Organization)
   organization: Organization;
+
+  @HasMany(() => Tag, { onDelete: 'CASCADE' })
+  tags: Tag[];
 
   @HasMany(() => Task, { onDelete: 'CASCADE' })
   tasks: Task[];
