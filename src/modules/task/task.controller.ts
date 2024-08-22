@@ -83,7 +83,7 @@ export default class TaskController {
     @Param('taskId') taskId: string,
     @Body() body: UpdateTaskValidation,
   ): Promise<string> {
-    const [error, task] = await this.taskService.updateTaskById(
+    const [error, updatedTask] = await this.taskService.updateTaskById(
       Number(taskId),
       body,
     );
@@ -96,11 +96,21 @@ export default class TaskController {
     }
 
     // not found Task
-    if (!task) {
+    if (!updatedTask) {
       throw new HttpException('NOT_FOUND', HttpStatus.NOT_FOUND);
     }
 
-    return task;
+    // set task users
+    if (body.users) {
+      updatedTask.$set('users', body.users);
+    }
+
+    // set task tags
+    if (body.tags) {
+      updatedTask.$set('tags', body.tags);
+    }
+
+    return updatedTask;
   }
 
   @Delete('/tasks/:taskId')
