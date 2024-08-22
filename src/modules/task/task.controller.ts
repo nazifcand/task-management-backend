@@ -8,6 +8,8 @@ import {
   Param,
   Post,
   Put,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { Task } from 'src/models/Task.model';
 import { TaskService } from './task.service';
@@ -15,6 +17,7 @@ import {
   CreateTaskValidation,
   UpdateTaskValidation,
 } from 'src/validators/task.validation';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller()
 export default class TaskController {
@@ -45,8 +48,14 @@ export default class TaskController {
     return task;
   }
 
+  @UseGuards(AuthGuard)
   @Post('/tasks')
-  async createTask(@Body() body: CreateTaskValidation): Promise<Task> {
+  async createTask(
+    @Req() req,
+    @Body() body: CreateTaskValidation,
+  ): Promise<Task> {
+    body['createdUserId'] = req.user.id;
+
     const [error, createdTask] = await this.taskService.createTask(body);
 
     if (error) {
