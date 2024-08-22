@@ -1,4 +1,4 @@
-import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateTaskValidation {
   @IsString()
@@ -21,12 +21,12 @@ export class CreateTaskValidation {
   tags: number[];
 
   @IsOptional()
-  @IsDate()
-  startDate: Date;
+  @IsNumber()
+  startDate: number;
 
   @IsOptional()
-  @IsDate()
-  endDate: Date;
+  @IsNumber()
+  endDate: number;
 }
 
 export class UpdateTaskValidation {
@@ -55,10 +55,10 @@ export class UpdateTaskValidation {
   tags: number[];
 
   @IsOptional()
-  @IsDate()
-  startDate: Date;
+  @IsNumber()
+  startDate: number;
 
   @IsOptional()
-  @IsDate()
-  endDate: Date;
+  @IsNumber()
+  endDate: number;
 }
