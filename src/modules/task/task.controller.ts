@@ -19,6 +19,7 @@ import {
 } from 'src/validators/task.validation';
 import { AuthGuard } from '../auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller()
 export default class TaskController {
   constructor(private taskService: TaskService) {}
@@ -48,7 +49,6 @@ export default class TaskController {
     return task;
   }
 
-  @UseGuards(AuthGuard)
   @Post('/tasks')
   async createTask(
     @Req() req,

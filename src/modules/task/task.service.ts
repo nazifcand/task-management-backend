@@ -78,6 +78,27 @@ export class TaskService {
           },
           through: { attributes: [] },
         },
+        {
+          as: 'tags',
+          model: Tag,
+          attributes: {
+            exclude: ['projectId', 'createdAt', 'updatedAt', 'createdUserId'],
+          },
+          through: { attributes: [] },
+        },
+        {
+          as: 'status',
+          model: Status,
+          attributes: {
+            exclude: [
+              'createdAt',
+              'updatedAt',
+              'projectId',
+              'createdUserId',
+              'default',
+            ],
+          },
+        },
       ],
     })
       .then((data) => [null, data])
