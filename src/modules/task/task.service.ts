@@ -9,7 +9,14 @@ export class TaskService {
   async getTasks(): Promise<Task[]> {
     return await Task.findAll({
       attributes: {
-        exclude: ['createdAt', 'updatedAt', 'password', 'projectId'],
+        exclude: [
+          'createdAt',
+          'updatedAt',
+          'password',
+          'projectId',
+          'statusId',
+          'createdUserId',
+        ],
       },
       include: [
         {
@@ -30,14 +37,22 @@ export class TaskService {
           as: 'tags',
           model: Tag,
           attributes: {
-            exclude: ['projectId', 'createdAt', 'updatedAt'],
+            exclude: ['projectId', 'createdAt', 'updatedAt', 'createdUserId'],
           },
           through: { attributes: [] },
         },
         {
           as: 'status',
           model: Status,
-          attributes: { exclude: ['createdAt', 'updatedAt', 'projectId'] },
+          attributes: {
+            exclude: [
+              'createdAt',
+              'updatedAt',
+              'projectId',
+              'createdUserId',
+              'default',
+            ],
+          },
         },
       ],
     });
