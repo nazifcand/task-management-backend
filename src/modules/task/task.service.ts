@@ -6,8 +6,9 @@ import { User } from 'src/models/User.model';
 
 @Injectable()
 export class TaskService {
-  async getTasks(): Promise<Task[]> {
+  async getTasks(where = {}): Promise<Task[]> {
     return await Task.findAll({
+      where,
       attributes: {
         exclude: [
           'createdAt',

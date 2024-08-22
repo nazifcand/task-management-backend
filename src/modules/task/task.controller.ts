@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -25,8 +26,14 @@ export default class TaskController {
   constructor(private taskService: TaskService) {}
 
   @Get('/tasks')
-  async getTasks(): Promise<Task[]> {
-    const tasks = await this.taskService.getTasks();
+  async getTasks(@Query('projectId') projectId: number): Promise<Task[]> {
+    const where = {};
+
+    if (projectId) {
+      where['projectId'] = projectId;
+    }
+
+    const tasks = await this.taskService.getTasks(where);
     return tasks;
   }
 
