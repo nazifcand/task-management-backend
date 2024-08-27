@@ -41,7 +41,7 @@ export class User extends Model {
   @Column
   surname: string;
 
-  @Default('default-avatar.svg')
+  @Default('/default-avatar.svg')
   @Column
   avatar: string;
 

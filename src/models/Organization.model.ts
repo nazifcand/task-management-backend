@@ -25,7 +25,7 @@ export class Organization extends Model {
   @Column
   description: string;
 
-  @Default('default-thumbnail.svg')
+  @Default('/default-thumbnail.svg')
   @Column
   thumbnail: string;
 
